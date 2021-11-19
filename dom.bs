@@ -1846,17 +1846,10 @@ steps are:
  <li><p>Let <var>global</var> be <var>signal</var>'s <a>relevant global object</a>.
 
  <li>
-  <p>Run these steps <a>in parallel</a>:
+  <p><a>Wait for a timeout</a> given <var>global</var>, "<code>AbortSignal-timeout</code>",
+  <var>milliseconds</var>, and the following step:</p>
 
   <ol>
-   <li><p>Wait <var>milliseconds</var> milliseconds.
-
-   <li><p>Wait until any instances of these in-parallel steps that had the same <var>global</var>,
-   that started before this one, and whose <var>milliseconds</var> value is equal to or less than
-   this one's, have completed.
-
-   <li><p>Optionally, wait a further <a>implementation-defined</a> amount of time.
-
    <li><p><a>Queue a global task</a> on the <a>timer task source</a> given <var>global</var> to
    <a for=AbortSignal>signal abort</a> given <var>signal</var> and a new
    "{{TimeoutError!!exception}}" {{DOMException}}.
