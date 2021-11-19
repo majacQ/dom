@@ -1668,7 +1668,7 @@ The API which wishes to support aborting can accept an {{AbortSignal}} object, a
 determine how to proceed.
 
 <p>APIs that rely upon {{AbortController}} are encouraged to respond to {{AbortController/abort()}}
-by rejecting any unsettled promise with a new "{{AbortError!!exception}}" {{DOMException}}.
+by rejecting any unsettled promise with the {{AbortSignal}}'s [=AbortSignal/abort reason=].
 
 <div class=example id=aborting-ongoing-activities-example>
  <p>A hypothetical <code>doAmazingness({ ... })</code> method could accept an {{AbortSignal}} object
@@ -1705,7 +1705,7 @@ function doAmazingness({signal}) {
     // But also, watch for signals:
     signal.addEventListener('abort', () => {
       // Stop doing amazingness, and:
-      reject(new DOMException('Aborted', 'AbortError'));
+      reject(signal.reason);
     });
   });
 }
@@ -1770,6 +1770,7 @@ to <a for=AbortSignal>signal abort</a> on <a>this</a>'s <a for=AbortController>s
 [Exposed=(Window,Worker)]
 interface AbortSignal : EventTarget {
   [NewObject] static AbortSignal abort(optional any reason);
+  [NewObject] static AbortSignal timeout([EnforceRange] unsigned long long milliseconds);
 
   readonly attribute boolean aborted;
   readonly attribute any reason;
@@ -1781,6 +1782,11 @@ interface AbortSignal : EventTarget {
  <dt><code>AbortSignal . <a method for=AbortSignal>abort</a>(<var>reason</var>)</code>
  <dd>Returns an {{AbortSignal}} instance whose <a for=AbortSignal>abort reason</a> is set to
  <var>reason</var> if not undefined; otherwise to an "{{AbortError!!exception}}" {{DOMException}}.
+
+ <dt><code>AbortSignal . <a method for=AbortSignal lt=timeout(milliseconds)>timeout</a>(<var>milliseconds</var>)</code>
+ <dd>Returns an {{AbortSignal}} instance which will be aborted in <var>milliseconds</var>
+ milliseconds. Its <a for=AbortSignal>abort reason</a> will be set to a
+ "{{TimeoutError!!exception}}" {{DOMException}}.
 
  <dt><code><var>signal</var> . <a attribute for=AbortSignal>aborted</a></code>
  <dd>Returns true if this {{AbortSignal}}'s {{AbortController}} has signaled to abort; otherwise
@@ -1827,6 +1833,34 @@ are:
 
  <li><p>Set <var>signal</var>'s [=AbortSignal/abort reason=] to <var>reason</var> if it is given;
  otherwise to a new "{{AbortError!!exception}}" {{DOMException}}.
+
+ <li>Return <var>signal</var>.
+</ol>
+
+<p>The static <dfn method for=AbortSignal><code>timeout(<var>milliseconds</var>)</code></dfn> method
+steps are:
+
+<ol>
+ <li><p>Let <var>signal</var> be a new {{AbortSignal}} object.
+
+ <li><p>Let <var>global</var> be <var>signal</var>'s <a>relevant global object</a>.
+
+ <li>
+  <p>Run these steps <a>in parallel</a>:
+
+  <ol>
+   <li><p>Wait <var>milliseconds</var> milliseconds.
+
+   <li><p>Wait until any instances of these in-parallel steps that had the same <var>global</var>,
+   that started before this one, and whose <var>milliseconds</var> value is equal to or less than
+   this one's, have completed.
+
+   <li><p>Optionally, wait a further <a>implementation-defined</a> amount of time.
+
+   <li><p><a>Queue a global task</a> on the <a>timer task source</a> given <var>global</var> to
+   <a for=AbortSignal>signal abort</a> given <var>signal</var> and a new
+   "{{TimeoutError!!exception}}" {{DOMException}}.
+  </ol>
 
  <li>Return <var>signal</var>.
 </ol>
