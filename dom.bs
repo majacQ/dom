@@ -1855,7 +1855,7 @@ steps are:
    "{{TimeoutError!!exception}}" {{DOMException}}.
   </ol>
 
- <li>Return <var>signal</var>.
+ <li><p>Return <var>signal</var>.
 </ol>
 
 <p>The <dfn attribute for=AbortSignal>aborted</dfn> getter steps are to return true if <a>this</a>
