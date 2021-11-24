@@ -1846,7 +1846,7 @@ steps are:
  <li><p>Let <var>global</var> be <var>signal</var>'s <a>relevant global object</a>.
 
  <li>
-  <p><a>Wait for a timeout</a> given <var>global</var>, "<code>AbortSignal-timeout</code>",
+  <p><a>Run steps after a timeout</a> given <var>global</var>, "<code>AbortSignal-timeout</code>",
   <var>milliseconds</var>, and the following step:</p>
 
   <ol>
