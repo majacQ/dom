@@ -1855,6 +1855,10 @@ steps are:
    "{{TimeoutError!!exception}}" {{DOMException}}.
   </ol>
 
+  <p>For the duration of this timeout, if <var>signal</var> has any event listeners registered for
+  its {{AbortSignal/abort}} event, there must be a strong reference from <var>global</var> to
+  <var>signal</var>.
+
  <li><p>Return <var>signal</var>.
 </ol>
 
