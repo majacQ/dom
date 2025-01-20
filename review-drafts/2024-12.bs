@@ -1,5 +1,7 @@
 <pre class=metadata>
 Group: WHATWG
+Status: RD
+Date: 2024-12-16
 H1: DOM
 Shortname: dom
 Text Macro: TWITTER thedomstandard
@@ -146,7 +148,7 @@ first <a>following</a> <a for=tree>sibling</a> or null if it has no <a for=tree>
 
  <li><p>Let <var>tokens</var> be a new <a>ordered set</a>.
 
- <li><p><a for=list>For each</a> <var>token</var> of <var>inputTokens</var>, <a for=set>append</a>
+ <li><p><a for=list>For each</a> <var>token</var> in <var>inputTokens</var>, <a for=set>append</a>
  <var>token</var> to <var>tokens</var>.
 
  <li>Return <var>tokens</var>.
@@ -336,7 +338,7 @@ are invoked, now in reverse <a>tree order</a>.
 
 <p>The <code>debug</code> function will be invoked twice. Each time the <a>event</a>'s
 {{Event/target}} attribute value will be the <code>span</code> <a for=/>element</a>. The first time
-{{Event/currentTarget}} attribute's value will be the <a for=/>document</a>, the second time the
+{{Event/currentTarget}} attribute's value will be the <a>document</a>, the second time the
 <code>body</code> <a for=/>element</a>. {{Event/eventPhase}} attribute's value switches from
 {{Event/CAPTURING_PHASE}} to {{Event/BUBBLING_PHASE}}. If an <a>event listener</a> was registered
 for the <code>span</code> <a for=/>element</a>, {{Event/eventPhase}} attribute's value would have
@@ -894,7 +896,7 @@ correct defaults.</p>
  <a>relative high resolution coarse time</a> given <var>time</var> and <var>event</var>'s
  <a>relevant global object</a>.
 
- <li><p><a for=map>For each</a> <var>member</var> → <var>value</var> of <var>dictionary</var>, if
+ <li><p><a for=map>For each</a> <var>member</var> → <var>value</var> in <var>dictionary</var>, if
  <var>event</var> has an attribute whose <a spec=webidl>identifier</a> is <var>member</var>, then
  initialize that attribute to <var>value</var>.
 
@@ -972,8 +974,8 @@ object, an <a>event listener</a> is a broader concept as can be seen above.
 which takes an <a>event</a> <var>event</var>, and returns an {{EventTarget}} object. Unless
 specified otherwise it returns null.
 
-<p class=note><a for=/>Nodes</a>, <a for=/>shadow roots</a>, and <a for=/>documents</a> override the
-<a>get the parent</a> algorithm.
+<p class=note><a for=/>Nodes</a>, <a for=/>shadow roots</a>, and <a>documents</a>
+override the <a>get the parent</a> algorithm.
 
 <p>Each {{EventTarget}} object can have an associated
 <dfn export for=EventTarget>activation behavior</dfn> algorithm. The
@@ -1305,8 +1307,6 @@ property of the event being dispatched.
  <li><p>Let <var>relatedTarget</var> be the result of <a>retargeting</a> <var>event</var>'s
  <a for=Event>relatedTarget</a> against <var>target</var>.
 
- <li><p>Let <var>clearTargets</var> be false.
-
  <li>
   <p>If <var>target</var> is not <var>relatedTarget</var> or <var>target</var> is <var>event</var>'s
   <a for=Event>relatedTarget</a>:
@@ -1407,17 +1407,18 @@ property of the event being dispatched.
    <li><p>Let <var>clearTargetsStruct</var> be the last struct in <var>event</var>'s
    <a for=Event>path</a> whose <a for=Event/path>shadow-adjusted target</a> is non-null.
 
-   <li><p>If <var>clearTargetsStruct</var>'s <a for=Event/path>shadow-adjusted target</a>,
-   <var>clearTargetsStruct</var>'s <a for=Event/path>relatedTarget</a>, or an {{EventTarget}} object
-   in <var>clearTargetsStruct</var>'s <a for=Event/path>touch target list</a> is a <a for=/>node</a>
-   whose <a for=tree>root</a> is a <a for=/>shadow root</a>: set <var>clearTargets</var> to true.
+   <li><p>Let <var>clearTargets</var> be true if <var>clearTargetsStruct</var>'s
+   <a for=Event/path>shadow-adjusted target</a>, <var>clearTargetsStruct</var>'s
+   <a for=Event/path>relatedTarget</a>, or an {{EventTarget}} object in
+   <var>clearTargetsStruct</var>'s <a for=Event/path>touch target list</a> is a <a for=/>node</a>
+   and its <a for=tree>root</a> is a <a for=/>shadow root</a>; otherwise false.
 
    <li><p>If <var>activationTarget</var> is non-null and <var>activationTarget</var> has
    <a for=EventTarget>legacy-pre-activation behavior</a>, then run <var>activationTarget</var>'s
    <a for=EventTarget>legacy-pre-activation behavior</a>.
 
    <li>
-    <p><a for=list>For each</a> <var>struct</var> of <var>event</var>'s <a for=Event>path</a>, in
+    <p><a for=list>For each</a> <var>struct</var> in <var>event</var>'s <a for=Event>path</a>, in
     reverse order:
 
     <ol>
@@ -1432,7 +1433,7 @@ property of the event being dispatched.
     </ol>
 
    <li>
-    <p><a for=list>For each</a> <var>struct</var> of <var>event</var>'s <a for=Event>path</a>:
+    <p><a for=list>For each</a> <var>struct</var> in <var>event</var>'s <a for=Event>path</a>:
 
     <ol>
      <li><p>If <var>struct</var>'s <a for=Event/path>shadow-adjusted target</a> is non-null, then
@@ -1592,7 +1593,7 @@ and an optional <var>legacyOutputDidListenersThrowFlag</var>, run these steps:
  <li><p>Let <var>found</var> be false.
 
  <li>
-  <p><a for=list>For each</a> <var>listener</var> of <var>listeners</var>, whose
+  <p><a for=list>For each</a> <var>listener</var> in <var>listeners</var>, whose
   <a for="event listener">removed</a> is false:
 
   <ol>
@@ -1729,7 +1730,7 @@ can only be used to influence an ongoing one.
 
 
 
-<h2 id=aborting-ongoing-activities>Aborting ongoing activities</h2>
+<h2 id=aborting-ongoing-activities>Aborting ongoing activities</h3>
 
 <p>Though promises do not have a built-in aborting mechanism, many APIs using them require abort
 semantics. {{AbortController}} is meant to support these requirements by providing an
@@ -2219,7 +2220,7 @@ It is represented as follows:
 
 <ul class=domTree>
  <li>
-  <a for=/>Document</a>
+  <a>Document</a>
   <ul>
    <li class=t10><a>Doctype</a>: <code>html</code>
    <li class=t1>{{Element}}: <code>html</code> <span class=t2><code class="attribute name">class</code>="<code class="attribute value">e</code>"</span>
@@ -2341,16 +2342,16 @@ therefore alone in a <a>tree</a>.
 <h4 id=document-trees>Document tree</h4>
 
 <p>A <dfn export id=concept-document-tree>document tree</dfn> is a <a>node tree</a> whose
-<a for=tree>root</a> is a <a for=/>document</a>.
+<a for=tree>root</a> is a <a>document</a>.
 
-<p>The <dfn export>document element</dfn> of a <a for=/>document</a> is the <a for=/>element</a>
-whose <a for=tree>parent</a> is that <a for=/>document</a>, if it exists; otherwise null.
+<p>The <dfn export>document element</dfn> of a <a>document</a> is the <a for=/>element</a> whose
+<a for=tree>parent</a> is that <a>document</a>, if it exists; otherwise null.
 
 <p class=note>Per the <a>node tree</a> constraints, there can be only one such
 <a for=/>element</a>.
 
 <p>A <a for=/>node</a> is <dfn export>in a document tree</dfn> if its <a for=tree>root</a> is a
-<a for=/>document</a>.
+<a>document</a>.
 
 <p>A <a for=/>node</a> is <dfn export>in a document</dfn> if it is <a>in a document tree</a>.
 <span class=note>The term <a>in a document</a> is no longer supposed to be used. It indicates that
@@ -2371,7 +2372,7 @@ referred to as the <dfn export id=concept-light-tree>light tree</dfn>.</p>
 itself.</p>
 
 <p id=in-a-shadow-including-document>A <a for=/>node</a> is <dfn export>connected</dfn> if its
-<a>shadow-including root</a> is a <a for=/>document</a>.
+<a>shadow-including root</a> is a <a>document</a>.
 
 <h5 id=shadow-tree-slots>Slots</h5>
 
@@ -2461,20 +2462,20 @@ reference to the <a>slot</a>, because this variable is not directly accessible f
 
 <h5 id=finding-slots-and-slotables>Finding slots and slottables</h5>
 
-<div algorithm>
-<p>To <dfn>find a slot</dfn> for a given <a for=/>slottable</a> <var>slottable</var> and an optional
-boolean <var>open</var> (default false):
+<p>To <dfn export lt="find a slot|finding a slot">find a slot</dfn> for a given <a>slottable</a>
+<var>slottable</var> and an optional <i>open flag</i> (unset unless stated otherwise), run these
+steps:</p>
 
 <ol>
- <li><p>If <var>slottable</var>'s <a for=tree>parent</a> is null, then return null.
+ <li><p>If <var>slottable</var>'s <a for=tree>parent</a> is null, then return null.</p></li>
 
  <li><p>Let <var>shadow</var> be <var>slottable</var>'s <a for=tree>parent</a>'s
- <a for=Element>shadow root</a>.
+ <a for=Element>shadow root</a>.</p></li>
 
- <li><p>If <var>shadow</var> is null, then return null.
+ <li><p>If <var>shadow</var> is null, then return null.</p></li>
 
- <li><p>If <var>open</var> is true and <var>shadow</var>'s <a for=ShadowRoot>mode</a> is not
- "<code>open</code>", then return null.
+ <li><p>If the <i>open flag</i> is set and <var>shadow</var>'s <a for=ShadowRoot>mode</a> is
+ <em>not</em> "<code>open</code>", then return null.</p></li>
 
  <li><p>If <var>shadow</var>'s <a for=ShadowRoot>slot assignment</a> is "<code>manual</code>", then
  return the <a>slot</a> in <var>shadow</var>'s <a for=tree>descendants</a> whose
@@ -2485,14 +2486,12 @@ boolean <var>open</var> (default false):
  <a for=tree>descendants</a> whose <a for=slot>name</a> is <var>slottable</var>'s
  <a for=slottable>name</a>, if any; otherwise null.
 </ol>
-</div>
 
-<div algorithm>
-<p>To <dfn export id=find-slotables>find slottables</dfn> for a given <a for=/>slot</a>
-<var>slot</var>:
+<p>To <dfn export lt="find slottables|finding slottables" id=find-slotables>find slottables</dfn>
+for a given <a>slot</a> <var>slot</var>, run these steps:</p>
 
 <ol>
- <li><p>Let <var>result</var> be « ».
+ <li><p>Let <var>result</var> be an empty list.</p></li>
 
  <li><p>Let <var>root</var> be <var>slot</var>'s <a for=tree>root</a>.
 
@@ -2504,6 +2503,8 @@ boolean <var>open</var> (default false):
   <p>If <var>root</var>'s <a for=ShadowRoot>slot assignment</a> is "<code>manual</code>":
 
   <ol>
+   <li><p>Let <var>result</var> be « ».
+
    <li><p><a for=set>For each</a> <a>slottable</a> <var>slottable</var> of <var>slot</var>'s
    <a>manually assigned nodes</a>, if <var>slottable</var>'s <a for=tree>parent</a> is
    <var>host</var>, <a for=list>append</a> <var>slottable</var> to <var>result</var>.
@@ -2520,29 +2521,29 @@ boolean <var>open</var> (default false):
    <li><p>If <var>foundSlot</var> is <var>slot</var>, then <a for=list>append</a>
    <var>slottable</var> to <var>result</var>.
   </ol>
+ </li>
 
- <li><p>Return <var>result</var>.
+ <li><p>Return <var>result</var>.</p></li>
 </ol>
-</div>
 
-<div algorithm>
-<p>To <dfn export id=find-flattened-slotables>find flattened slottables</dfn> for a given
-<a for=/>slot</a> <var>slot</var>:
+<p>To
+<dfn export lt="find flattened slottables|finding flattened slottables" id=find-flattened-slotables>find flattened slottables</dfn>
+for a given <a>slot</a> <var>slot</var>, run these steps:</p>
 
 <ol>
- <li><p>Let <var>result</var> be « ».
+ <li><p>Let <var>result</var> be an empty list.</p></li>
 
  <li><p>If <var>slot</var>'s <a for=tree>root</a> is not a <a for=/>shadow root</a>, then return
- <var>result</var>.
+ <var>result</var>.</p></li>
 
  <li><p>Let <var>slottables</var> be the result of <a>finding slottables</a> given
- <var>slot</var>.
+ <var>slot</var>.</p></li>
 
  <li><p>If <var>slottables</var> is the empty list, then append each <a>slottable</a>
- <a for=tree>child</a> of <var>slot</var>, in <a>tree order</a>, to <var>slottables</var>.
+ <a for=tree>child</a> of <var>slot</var>, in <a>tree order</a>, to <var>slottables</var>.</p></li>
 
  <li>
-  <p>For each <var>node</var> of <var>slottables</var>:
+  <p>For each <var>node</var> in <var>slottables</var>:
 
   <ol>
    <li>
@@ -2550,23 +2551,23 @@ boolean <var>open</var> (default false):
 
     <ol>
      <li><p>Let <var>temporaryResult</var> be the result of <a>finding flattened slottables</a> given
-     <var>node</var>.
+     <var>node</var>.</p></li>
 
      <li><p>Append each <a>slottable</a> in <var>temporaryResult</var>, in order, to
-     <var>result</var>.
+     <var>result</var>.</p></li>
     </ol>
 
-   <li><p>Otherwise, append <var>node</var> to <var>result</var>.
+   <li><p>Otherwise, append <var>node</var> to <var>result</var>.</p></li>
   </ol>
+ </li>
 
- <li><p>Return <var>result</var>.
+ <li><p>Return <var>result</var>.</p></li>
 </ol>
-</div>
 
 <h5 id=assigning-slotables-and-slots>Assigning slottables and slots</h5>
 
-<div algorithm>
-<p>To <dfn id=assign-slotables>assign slottables</dfn> for a <a for=/>slot</a> <var>slot</var>:
+<p>To <dfn noexport id=assign-slotables>assign slottables</dfn> for a <a>slot</a> <var>slot</var>,
+run these steps:
 
 <ol>
  <li><p>Let <var>slottables</var> be the result of <a>finding slottables</a> for <var>slot</var>.
@@ -2576,34 +2577,29 @@ boolean <var>open</var> (default false):
 
  <li><p>Set <var>slot</var>'s <a for=slot>assigned nodes</a> to <var>slottables</var>.
 
- <li><p>For each <var>slottable</var> of <var>slottables</var>, set <var>slottable</var>'s
+ <li><p>For each <var>slottable</var> in <var>slottables</var>, set <var>slottable</var>'s
  <a>assigned slot</a> to <var>slot</var>.
 </ol>
-</div>
 
-<div algorithm>
-<p>To <dfn id=assign-slotables-for-a-tree>assign slottables for a tree</dfn>, given a
-<a for=/>node</a> <var>root</var>, run <a>assign slottables</a> for each <a for=/>slot</a> of
-<var>root</var>'s <a for=tree>inclusive descendants</a>, in <a>tree order</a>.
-</div>
+<p>To <dfn noexport id=assign-slotables-for-a-tree>assign slottables for a tree</dfn>, given a
+<a for=/>node</a> <var>root</var>, run <a>assign slottables</a> for each <a>slot</a> <var>slot</var>
+in <var>root</var>'s <a for=tree>inclusive descendants</a>, in <a>tree order</a>.
 
-<div algorithm>
-<p>To <dfn>assign a slot</dfn>, given a <a>slottable</a> <var>slottable</var>:
+<p>To <dfn noexport>assign a slot</dfn>, given a <a>slottable</a> <var>slottable</var>, run these
+steps:
 
 <ol>
  <li><p>Let <var>slot</var> be the result of <a>finding a slot</a> with <var>slottable</var>.
 
  <li><p>If <var>slot</var> is non-null, then run <a>assign slottables</a> for <var>slot</var>.
 </ol>
-</div>
 
 <h5 id=signaling-slot-change>Signaling slot change</h5>
 
 <p>Each <a>similar-origin window agent</a> has <dfn noexport id=signal-slot-list>signal slots</dfn>
 (a <a for=/>set</a> of <a>slots</a>), which is initially empty. [[!HTML]]
 
-<div algorithm>
-<p>To <dfn>signal a slot change</dfn>, for a <a>slot</a> <var>slot</var>:
+<p>To <dfn noexport>signal a slot change</dfn>, for a <a>slot</a> <var>slot</var>, run these steps:
 
 <ol>
  <li><p><a for=set>Append</a> <var>slot</var> to <var>slot</var>'s <a>relevant agent</a>'s
@@ -2611,7 +2607,6 @@ boolean <var>open</var> (default false):
 
  <li><p><a>Queue a mutation observer microtask</a>.
 </ol>
-</div>
 
 
 <h4 id=mutation-algorithms>Mutation algorithms</h4>
@@ -2635,12 +2630,12 @@ boolean <var>open</var> (default false):
  "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 
  <li><p>If either <var>node</var> is a {{Text}} <a for=/>node</a> and <var>parent</var> is a
- <a for=/>document</a>, or <var>node</var> is a <a>doctype</a> and <var>parent</var> is not a
- <a for=/>document</a>, then <a>throw</a> a "{{HierarchyRequestError!!exception}}" {{DOMException}}.
+ <a>document</a>, or <var>node</var> is a <a>doctype</a> and <var>parent</var> is not a
+ <a>document</a>, then <a>throw</a> a "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 
  <li>
-  <p>If <var>parent</var> is a <a for=/>document</a>, and any of the statements below, switched on
-  the interface <var>node</var> <a>implements</a>, are true, then <a>throw</a> a
+  <p>If <var>parent</var> is a <a>document</a>, and any of the statements below, switched on the
+  interface <var>node</var> <a>implements</a>, are true, then <a>throw</a> a
   "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 
   <dl class=switch>
@@ -2905,12 +2900,12 @@ within a <var>parent</var>, run these steps:
  "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 
  <li><p>If either <var>node</var> is a {{Text}} <a for=/>node</a> and <var>parent</var> is a
- <a for=/>document</a>, or <var>node</var> is a <a>doctype</a> and <var>parent</var> is not a
- <a for=/>document</a>, then <a>throw</a> a "{{HierarchyRequestError!!exception}}" {{DOMException}}.
+ <a>document</a>, or <var>node</var> is a <a>doctype</a> and <var>parent</var> is not a
+ <a>document</a>, then <a>throw</a> a "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 
  <li>
-  <p>If <var>parent</var> is a <a for=/>document</a>, and any of the statements below, switched on
-  the interface <var>node</var> <a>implements</a>, are true, then <a>throw</a> a
+  <p>If <var>parent</var> is a <a>document</a>, and any of the statements below, switched on the
+  interface <var>node</var> <a>implements</a>, are true, then <a>throw</a> a
   "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 
   <dl class=switch>
@@ -3452,7 +3447,8 @@ Text includes Slottable;
 </pre>
 
 <p>The <dfn attribute for=Slottable id=dom-slotable-assignedslot><code>assignedSlot</code></dfn>
-getter steps are to return the result of <a>find a slot</a> given <a>this</a> and true.
+getter steps are to return the result of <a>find a slot</a> given <a>this</a> and with the
+<i>open flag</i> set.
 
 
 <h4 id=old-style-collections>Old-style collections: {{NodeList}} and {{HTMLCollection}}</h4>
@@ -4103,7 +4099,7 @@ interface Node : EventTarget {
   [CEReactions] attribute DOMString? textContent;
   [CEReactions] undefined normalize();
 
-  [CEReactions, NewObject] Node cloneNode(optional boolean subtree = false);
+  [CEReactions, NewObject] Node cloneNode(optional boolean deep = false);
   boolean isEqualNode(Node? otherNode);
   boolean isSameNode(Node? otherNode); // legacy alias of ===
 
@@ -4136,7 +4132,7 @@ get a direct instance of it.
 
 <p>Each <a for=/>node</a> has an associated
 <dfn export for=Node id=concept-node-document>node document</dfn>, set upon creation, that is a
-<a for=/>document</a>.
+<a>document</a>.
 
 <p class=note>A <a for=/>node</a>'s <a for=Node>node document</a> can be changed by the
 <a>adopt</a> algorithm.
@@ -4300,7 +4296,7 @@ statement, switching on the interface <a>this</a> <a>implements</a>:
  <dt><code><var>node</var> . {{Node/ownerDocument}}</code>
  <dd>
   Returns the <a for=Node>node document</a>.
-  Returns null for <a for=/>documents</a>.
+  Returns null for <a>documents</a>.
 
  <dt><code><var>node</var> . {{Node/getRootNode()}}</code>
  <dd>Returns <var>node</var>'s <a for=tree>root</a>.
@@ -4340,11 +4336,10 @@ statement, switching on the interface <a>this</a> <a>implements</a>:
 if <a>this</a> is <a>connected</a>; otherwise false.</p>
 
 <p>The <dfn attribute for=Node><code>ownerDocument</code></dfn> getter steps are to return null,
-if <a>this</a> is a <a for=/>document</a>; otherwise <a>this</a>'s <a for=Node>node document</a>.
+if <a>this</a> is a <a>document</a>; otherwise <a>this</a>'s <a for=Node>node document</a>.
 
-<p class=note>The <a for=Node>node document</a> of a <a for=/>document</a> is that
-<a for=/>document</a> itself. All <a for=/>nodes</a> have a <a for=Node>node document</a> at all
-times.
+<p class=note>The <a for=Node>node document</a> of a <a>document</a> is that <a>document</a> itself.
+All <a for=/>nodes</a> have a <a for=Node>node document</a> at all times.
 
 <p>The <dfn method for=Node><code>getRootNode(<var>options</var>)</code></dfn> method steps are to
 return <a>this</a>'s <a>shadow-including root</a> if
@@ -4527,9 +4522,9 @@ each <a for=tree>descendant</a> <a>exclusive <code>Text</code> node</a> <var>nod
 <hr>
 
 <dl class=domintro>
- <dt><code><var>node</var> . <a method for=Node lt=cloneNode()>cloneNode([<var>subtree</var> = false])</a></code>
+ <dt><code><var>node</var> . <a method for=Node lt=cloneNode()>cloneNode([<var>deep</var> = false])</a></code>
  <dd>Returns a copy of <var>node</var>. If
- <var>subtree</var> is true, the copy also includes the
+ <var>deep</var> is true, the copy also includes the
  <var>node</var>'s <a for=tree>descendants</a>.
 
  <dt><code><var>node</var> . {{Node/isEqualNode(otherNode)}}</code>
@@ -4539,83 +4534,33 @@ each <a for=tree>descendant</a> <a>exclusive <code>Text</code> node</a> <var>nod
 
 <div class=impl>
 
-<div algorithm>
 <a lt="Other applicable specifications">Specifications</a> may define
 <dfn export id=concept-node-clone-ext>cloning steps</dfn> for all or some <a for=/>nodes</a>. The
-algorithm is passed <var ignore>node</var>, <var ignore>copy</var>, and <var ignore>subtree</var> as
-indicated in the <a>clone a node</a> algorithm.
+algorithm is passed <var>copy</var>, <var>node</var>, <var>document</var>, and an optional
+<i>clone children flag</i>, as indicated in the <a lt="clone a node">clone</a> algorithm.
 
-<p class=note>HTML defines <a>cloning steps</a> for several elements, such as <{input}>, <{script}>,
-and <{template}>. SVG ought to do the same for its <{script}> elements, but does not.
-</div>
+<p class=note>HTML defines <a>cloning steps</a> for <{script}> and <{input}>
+elements. SVG ought to do the same for its <{script}> elements, but does not call this out
+at the moment.
 
-<div algorithm="clone a node">
-<p>To <dfn export id=concept-node-clone>clone a node</dfn> given a <a for=/>node</a> <var>node</var>
-and an optional <a for=/>document</a> <dfn export for="clone a node"><var>document</var></dfn>
-(default <var>node</var>'s <a for=Node>node document</a>), boolean
-<dfn export for="clone a node"><var>subtree</var></dfn> (default false), and
-<a for=/>node</a>-or-null <dfn export for="clone a node"><var>parent</var></dfn> (default null):
-
-<ol>
- <li><p><a for=/>Assert</a>: <var>node</var> is not a <a for=/>document</a> or <var>node</var> is
- <var>document</var>.
-
- <li><p>Let <var>copy</var> be the result of <a>cloning a single node</a> given <var>node</var> and
- <var>document</var>.
-
- <li><p>Run any <a>cloning steps</a> defined for <var>node</var> in
- <a>other applicable specifications</a> and pass <var>node</var>, <var>copy</var>, and
- <var>subtree</var> as parameters.
-
- <li><p>If <var>parent</var> is non-null, then <a for=/>append</a> <var>copy</var> to
- <var>parent</var>.
-
- <li><p>If <var>subtree</var> is true, then for each <var>child</var> of <var>node</var>'s
- <a for=tree>children</a>, in <a>tree order</a>: <a>clone a node</a> given <var>child</var> with
- <a for="clone a node"><i>document</i></a> set to <var>document</var>,
- <a for="clone a node"><i>subtree</i></a> set to <var>subtree</var>, and
- <a for="clone a node"><i>parent</i></a> set to <var>copy</var>.
-
- <li>
-  <p>If <var>node</var> is an <a for=/>element</a>, <var>node</var> is a
-  <a for=Element>shadow host</a>, and <var>node</var>'s <a for=Element>shadow root</a>'s
-  <a for=ShadowRoot>clonable</a> is true:
-
-  <ol>
-   <li><p><a for=/>Assert</a>: <var>copy</var> is not a <a for=Element>shadow host</a>.
-
-   <li><p><a>Attach a shadow root</a> with <var>copy</var>, <var>node</var>'s
-   <a for=Element>shadow root</a>'s <a for=ShadowRoot>mode</a>, true, <var>node</var>'s
-   <a for=Element>shadow root</a>'s <a for=ShadowRoot>serializable</a>, <var>node</var>'s
-   <a for=Element>shadow root</a>'s <a for=ShadowRoot>delegates focus</a>, and <var>node</var>'s
-   <a for=Element>shadow root</a>'s <a for=ShadowRoot>slot assignment</a>.
-
-   <li><p>Set <var>copy</var>'s <a for=Element>shadow root</a>'s <a for=ShadowRoot>declarative</a>
-   to <var>node</var>'s <a for=Element>shadow root</a>'s <a for=ShadowRoot>declarative</a>.
-
-   <li><p>For each <var>child</var> of <var>node</var>'s <a for=Element>shadow root</a>'s
-   <a for=tree>children</a>, in <a>tree order</a>: <a>clone a node</a> given <var>child</var> with
-   <a for="clone a node"><i>document</i></a> set to <var>document</var>,
-   <a for="clone a node"><i>subtree</i></a> set to <var>subtree</var>, and
-   <a for="clone a node"><i>parent</i></a> set to <var>copy</var>'s <a for=Element>shadow root</a>.
-  </ol>
-
- <li><p>Return <var>copy</var>.
-</ol>
-</div>
-
-<div algorithm>
-<p>To <dfn>clone a single node</dfn> given a <a for=/>node</a> <var>node</var> and
-<a for=/>document</a> <var>document</var>:
+<p>To <dfn export id=concept-node-clone lt="clone a node" local-lt="clone">clone</dfn> a
+<var>node</var>, with an optional <var>document</var> and <i>clone children flag</i>, run these
+steps:
+<!-- This algorithm is used by dom-Node-cloneNode, dom-Document-importNode,
+dom-Range-extractContents, dom-Range-cloneContents -->
 
 <ol>
- <li><p>Let <var>copy</var> be null.
+ <li><p>If <var>document</var> is not given, then set <var>document</var> to <var>node</var>'s
+ <a for=Node>node document</a>.
+
+ <li><a for=/>Assert</a>: <var>node</var> is not a <a for=/>document</a> or <var>node</var> is
+ <var>document</var>.
 
  <li>
   <p>If <var>node</var> is an <a for=/>element</a>:
 
   <ol>
-   <li><p>Set <var>copy</var> to the result of <a>creating an element</a>, given
+   <li><p>Let <var>copy</var> be the result of <a>creating an element</a>, given
    <var>document</var>, <var>node</var>'s <a for=Element>local name</a>, <var>node</var>'s
    <a for=Element>namespace</a>, <var>node</var>'s <a for=Element>namespace prefix</a>, and
    <var>node</var>'s <a><code>is</code> value</a>.
@@ -4625,15 +4570,16 @@ and an optional <a for=/>document</a> <dfn export for="clone a node"><var>docume
     <a for=Element>attribute list</a>:
 
     <ol>
-     <li><p>Let <var>copyAttribute</var> be the result of <a>cloning a single node</a> given
-     <var>attribute</var> and <var>document</var>.
+     <li><p>Let <var>copyAttribute</var> be a <a>clone</a> of <var>attribute</var>.
 
      <li><p><a lt="append an attribute">Append</a> <var>copyAttribute</var> to <var>copy</var>.
     </ol>
+   </li>
   </ol>
+ </li>
 
  <li>
-  <p>Otherwise, set <var>copy</var> to a <a for=/>node</a> that <a>implements</a> the same
+  <p>Otherwise, let <var>copy</var> be a <a for=/>node</a> that <a>implements</a> the same
   interfaces as <var>node</var>, and fulfills these additional requirements, switching on the
   interface <var>node</var> <a>implements</a>:
 
@@ -4663,28 +4609,54 @@ and an optional <a for=/>document</a> <dfn export for="clone a node"><var>docume
    <dd><p>Do nothing.
   </dl>
 
- <li><p><a for=/>Assert</a>: <var>copy</var> is a <a for=/>node</a>.
-
  <li><p>If <var>node</var> is a <a for=/>document</a>, then set <var>document</var> to
  <var>copy</var>.
 
  <li><p>Set <var>copy</var>'s <a for=Node>node document</a> to <var>document</var>.
 
+ <li><p>Run any <a>cloning steps</a> defined for <var>node</var> in
+ <a>other applicable specifications</a> and pass <var>copy</var>, <var>node</var>,
+ <var>document</var>, and the <i>clone children flag</i> if set, as parameters.
+
+ <li><p>If the <i>clone children flag</i> is set, then for each <a for=tree>child</a>
+ <var>child</var> of <var>node</var>, in <a>tree order</a>: <a>append</a> the result of
+ <a lt="clone a node">cloning</a> <var>child</var> with <var>document</var> and the
+ <i>clone children flag</i> set, to <var>copy</var>.
+
+ <li>
+  <p>If <var>node</var> is a <a for=Element>shadow host</a> whose <a for=/>shadow root</a>'s
+  <a for=ShadowRoot>clonable</a> is true:
+
+  <ol>
+   <li><p>Assert: <var>copy</var> is not a <a for=Element>shadow host</a>.
+
+   <li><p>Run <a>attach a shadow root</a> with <var>copy</var>, <var>node</var>'s
+   <a for=Element>shadow root</a>'s <a for=ShadowRoot>mode</a>, true, <var>node</var>'s
+   <a for=Element>shadow root</a>'s <a for=ShadowRoot>serializable</a>, <var>node</var>'s
+   <a for=Element>shadow root</a>'s <a for=ShadowRoot>delegates focus</a>, and <var>node</var>'s
+   <a for=Element>shadow root</a>'s <a for=ShadowRoot>slot assignment</a>.
+
+   <li><p>Set <var>copy</var>'s <a for=Element>shadow root</a>'s <a for=ShadowRoot>declarative</a>
+   to <var>node</var>'s <a for=Element>shadow root</a>'s <a for=ShadowRoot>declarative</a>.
+
+   <li><p>For each <a for=tree>child</a> <var>child</var> of <var>node</var>'s
+   <a for=Element>shadow root</a>, in <a>tree order</a>: <a>append</a> the result of
+   <a lt="clone a node">cloning</a> <var>child</var> with <var>document</var> and the
+   <i>clone children flag</i> set, to <var>copy</var>'s <a for=Element>shadow root</a>.
+  </ol>
+
  <li><p>Return <var>copy</var>.
 </ol>
-</div>
 
-<div algorithm>
-<p>The <dfn method for=Node><code>cloneNode(<var>subtree</var>)</code></dfn> method steps are:
+<p>The <dfn method for=Node><code>cloneNode(<var>deep</var>)</code></dfn> method steps are:
 
 <ol>
  <li><p>If <a>this</a> is a <a for=/>shadow root</a>, then <a>throw</a> a
  "{{NotSupportedError!!exception}}" {{DOMException}}.
 
- <li><p>Return the result of <a>cloning a node</a> given <a>this</a> with
- <a for="clone a node"><i>subtree</i></a> set to <var>subtree</var>.
+ <li><p>Return a <a lt="clone a node">clone</a> of <a>this</a>, with the
+ <i>clone children flag</i> set if <var>deep</var> is true.
 </ol>
-</div>
 
 <p>A <a for=/>node</a> <var>A</var> <dfn export for=Node id=concept-node-equals>equals</dfn> a
 <a for=/>node</a> <var>B</var> if all of the following conditions are true:
@@ -4808,7 +4780,7 @@ steps are:
 
     <ol>
      <li>
-      <p><a for=list>For each</a> <var>attr</var> of <var>node2</var>'s
+      <p><a for=list>For each</a> <var>attr</var> in <var>node2</var>'s
       <a for=Element>attribute list</a>:
 
       <ol>
@@ -5156,7 +5128,7 @@ interface Document : Node {
   [NewObject] Comment createComment(DOMString data);
   [NewObject] ProcessingInstruction createProcessingInstruction(DOMString target, DOMString data);
 
-  [CEReactions, NewObject] Node importNode(Node node, optional boolean subtree = false);
+  [CEReactions, NewObject] Node importNode(Node node, optional boolean deep = false);
   [CEReactions] Node adoptNode(Node node);
 
   [NewObject] Attr createAttribute(DOMString localName);
@@ -5182,9 +5154,9 @@ dictionary ElementCreationOptions {
 <p>{{Document}} <a for=/>nodes</a> are simply
 known as <dfn export id=concept-document lt="document">documents</dfn>.
 
-<p>A <a for=/>document</a>'s <a>node document</a> is itself.
+<p>A <a>document</a>'s <a>node document</a> is itself.
 
-<p>Each <a for=/>document</a> has an associated
+<p>Each <a>document</a> has an associated
 <dfn export for=Document id=concept-document-encoding>encoding</dfn> (an <a for=/>encoding</a>),
 <dfn export for=Document id=concept-document-content-type>content type</dfn> (a string),
 <dfn export for=Document id=concept-document-url>URL</dfn> (a <a for=/>URL</a>),
@@ -5196,19 +5168,18 @@ known as <dfn export id=concept-document lt="document">documents</dfn>.
 [[!URL]]
 [[!HTML]]
 
-<p>Unless stated otherwise, a <a for=/>document</a>'s <a for=Document>encoding</a> is the
-<a>utf-8</a> <a for=/>encoding</a>, <a for=Document>content type</a> is
+<p>Unless stated otherwise, a <a>document</a>'s <a for=Document>encoding</a> is the <a>utf-8</a>
+<a for=/>encoding</a>, <a for=Document>content type</a> is
 "<code>application/xml</code>", <a for=Document>URL</a> is "<code>about:blank</code>",
 <a for=Document>origin</a> is an <a>opaque origin</a>,
 <a for=Document>type</a> is "<code>xml</code>", <a for=Document>mode</a> is
 "<code>no-quirks</code>", and its <a for=Document>allow declarative shadow roots</a> is false.
 
-<p>A <a for=/>document</a> is said to be an <dfn export>XML document</dfn> if its
-<a for=Document>type</a> is "<code>xml</code>"; otherwise an <dfn export>HTML document</dfn>.
-Whether a <a for=/>document</a> is an <a>HTML document</a> or an <a>XML document</a> affects the
-behavior of certain APIs.
+<p>A <a>document</a> is said to be an <dfn export>XML document</dfn> if its <a for=Document>type</a>
+is "<code>xml</code>"; otherwise an <dfn export>HTML document</dfn>. Whether a <a>document</a> is an
+<a>HTML document</a> or an <a>XML document</a> affects the behavior of certain APIs.
 
-<p>A <a for=/>document</a> is said to be in
+<p>A <a>document</a> is said to be in
 <dfn export id=concept-document-no-quirks>no-quirks mode</dfn> if its
 <a for=Document>mode</a> is "<code>no-quirks</code>",
 <dfn export id=concept-document-quirks>quirks mode</dfn> if its <a for=Document>mode</a>
@@ -5217,9 +5188,9 @@ is "<code>quirks</code>", and
 <a for=Document>mode</a> is "<code>limited-quirks</code>".
 
 <div class=note>
- <p>The <a for=Document>mode</a> is only ever changed from the default for <a for=/>documents</a>
- created by the <a>HTML parser</a> based on the presence, absence, or value of the DOCTYPE string,
- and by a new <a for=/>browsing context</a> (initial "<code>about:blank</code>"). [[!HTML]]
+ <p>The <a for=Document>mode</a> is only ever changed from the default for <a>documents</a> created
+ by the <a>HTML parser</a> based on the presence, absence, or value of the DOCTYPE string, and by a
+ new <a for=/>browsing context</a> (initial "<code>about:blank</code>"). [[!HTML]]
 
  <p><a>No-quirks mode</a> was originally known as "standards mode" and <a>limited-quirks mode</a>
  was once known as "almost standards mode". They have been renamed because their details are now
@@ -5227,16 +5198,16 @@ is "<code>quirks</code>", and
  are nonsensical.)
 </div>
 
-<p>A <a for=/>document</a>'s <a>get the parent</a> algorithm, given an <var>event</var>, returns
+<p>A <a>document</a>'s <a>get the parent</a> algorithm, given an <var>event</var>, returns
 null if <var>event</var>'s {{Event/type}} attribute value is "<code>load</code>" or
-<a for=/>document</a> does not have a <a for=Document>browsing context</a>; otherwise the
-<a for=/>document</a>'s <a>relevant global object</a>.
+<a>document</a> does not have a <a for=Document>browsing context</a>; otherwise the
+<a>document</a>'s <a>relevant global object</a>.
 
 <hr>
 
 <dl class=domintro>
  <dt><code><var>document</var> = new {{Document()}}</code>
- <dd>Returns a new <a for=/>document</a>.
+ <dd>Returns a new <a>document</a>.
 
  <dt><code><var>document</var> . {{Document/implementation}}</code>
  <dd>Returns <var>document</var>'s {{DOMImplementation}} object.
@@ -5264,7 +5235,7 @@ steps are to set <a>this</a>'s <a for=Document>origin</a> to the <a for=Document
 <a>current global object</a>'s <a>associated <code>Document</code></a>. [[!HTML]]
 
 <p class=note>Unlike {{DOMImplementation/createDocument()}}, this constructor does not
-return an {{XMLDocument}} object, but a <a for=/>document</a> ({{Document}} object).
+return an {{XMLDocument}} object, but a <a>document</a> ({{Document}} object).
 
 <p>The
 <dfn attribute for=Document><code>implementation</code></dfn> getter steps are to return the
@@ -5296,7 +5267,7 @@ otherwise "<code>CSS1Compat</code>".
  <dt><var>document</var> . {{Document/documentElement}}
  <dd>Returns the <a>document element</a>.
 
- <dt><code><var>collection</var> = <var>document</var> . <a method for=Document lt="getElementsByTagName(qualifiedName)">getElementsByTagName</a>(<var>qualifiedName</var>)</code>
+ <dt><var>collection</var> = <var>document</var> . {{Document/getElementsByTagName(qualifiedName)}}</code>
 
  <dd>
   <p>If <var>qualifiedName</var> is "<code>*</code>" returns an {{HTMLCollection}} of all
@@ -5307,7 +5278,7 @@ otherwise "<code>CSS1Compat</code>".
   (Matches case-insensitively against <a for=/>elements</a> in the <a>HTML namespace</a> within an
   <a>HTML document</a>.)
 
- <dt><code><var>collection</var> = <var>document</var> . <a method for=Document lt="getElementsByTagNameNS(namespace, localName)">getElementsByTagNameNS</a>(<var>namespace</var>, <var>localName</var>)</code>
+ <dt><var>collection</var> = <var>document</var> . {{Document/getElementsByTagNameNS(namespace, localName)}}</code>
 
  <dd>
   <p>If <var>namespace</var> and <var>localName</var> are "<code>*</code>", returns an
@@ -5325,10 +5296,10 @@ otherwise "<code>CSS1Compat</code>".
   <a for=/>elements</a> whose <a for=Element>namespace</a> is <var>namespace</var> and
   <a for=Element>local name</a> is <var>localName</var>.
 
- <dt><code><var>collection</var> = <var>document</var> . <a method for=Document lt="getElementsByClassName(classNames)">getElementsByClassName</a>(<var>classNames</var>)</code>
- <dt><code><var>collection</var> = <var>element</var> . <a method for=Element lt="getElementsByClassName(classNames)">getElementsByClassName</a>(<var>classNames</var>)</code>
+ <dt><var>collection</var> = <var>document</var> . {{Document/getElementsByClassName(classNames)}}</code>
+ <dt><var>collection</var> = <var>element</var> . {{Element/getElementsByClassName(classNames)}}</code>
  <dd><p>Returns an {{HTMLCollection}} of the <a for=/>elements</a> in the object on which the method
- was invoked (a <a for=/>document</a> or an <a for=/>element</a>) that have all the classes given by
+ was invoked (a <a>document</a> or an <a for=/>element</a>) that have all the classes given by
  <var>classNames</var>. The <var>classNames</var> argument is interpreted as a space-separated list
  of classes.
 </dl>
@@ -5583,38 +5554,35 @@ method steps are:
 <hr>
 
 <dl class=domintro>
- <dt><var>clone</var> = <var>document</var> . <a method for=Document lt=importNode()>importNode(<var>node</var> [, <var>subtree</var> = false])</a>
+ <dt><var>clone</var> = <var>document</var> . <a method for=Document lt=importNode()>importNode(<var>node</var> [, <var>deep</var> = false])</a>
  <dd>
-  <p>Returns a copy of <var>node</var>. If <var>subtree</var> is true, the copy also includes the
+  <p>Returns a copy of <var>node</var>. If <var>deep</var> is true, the copy also includes the
   <var>node</var>'s <a for=tree>descendants</a>.
 
-  <p>If <var>node</var> is a <a for=/>document</a> or a <a for=/>shadow root</a>, throws a
+  <p>If <var>node</var> is a <a>document</a> or a <a for=/>shadow root</a>, throws a
   "{{NotSupportedError!!exception}}" {{DOMException}}.
 
  <dt><var>node</var> = <var>document</var> . {{adoptNode(node)}}
 
  <dd>
   Moves <var>node</var> from another
-  <a for=/>document</a> and returns it.
+  <a>document</a> and returns it.
 
-  If <var>node</var> is a <a for=/>document</a>, throws a "{{NotSupportedError!!exception}}"
+  If <var>node</var> is a <a>document</a>, throws a "{{NotSupportedError!!exception}}"
   {{DOMException}} or, if <var>node</var> is a <a for=/>shadow root</a>, throws a
   "{{HierarchyRequestError!!exception}}" {{DOMException}}.
 </dl>
 
-<div algorithm>
-<p>The <dfn method for=Document><code>importNode(<var>node</var>, <var>subtree</var>)</code></dfn>
+<p>The <dfn method for=Document><code>importNode(<var>node</var>, <var>deep</var>)</code></dfn>
 method steps are:
 
 <ol>
- <li><p>If <var>node</var> is a <a for=/>document</a> or <a for=/>shadow root</a>, then <a>throw</a>
- a "{{NotSupportedError!!exception}}" {{DOMException}}.
+ <li><p>If <var>node</var> is a <a>document</a> or <a for=/>shadow root</a>, then <a>throw</a> a
+ "{{NotSupportedError!!exception}}" {{DOMException}}.
 
- <li><p>Return the result of <a>cloning a node</a> given <var>node</var> with
- <a for="clone a node"><i>document</i></a> set to <a>this</a> and
- <a for="clone a node"><i>subtree</i></a> set to <var>subtree</var>.
+ <li><p>Return a <a lt="clone a node">clone</a> of <var>node</var>, with <a>this</a> and the
+ <i>clone children flag</i> set if <var>deep</var> is true.
 </ol>
-</div>
 
 <p><a lt="Other applicable specifications">Specifications</a> may define
 <dfn export id=concept-node-adopt-ext>adopting steps</dfn> for all or some <a for=/>nodes</a>. The
@@ -5661,7 +5629,7 @@ these steps:
 <p>The <dfn method for=Document><code>adoptNode(<var>node</var>)</code></dfn> method steps are:
 
 <ol>
- <li><p>If <var>node</var> is a <a for=/>document</a>, then <a>throw</a> a
+ <li><p>If <var>node</var> is a <a>document</a>, then <a>throw</a> a
  "{{NotSupportedError!!exception}}" {{DOMException}}.
 
  <li><p>If <var>node</var> is a <a for=/>shadow root</a>, then <a>throw</a> a
@@ -5820,8 +5788,9 @@ method steps are:
 
 <h4 id=interface-domimplementation>Interface {{DOMImplementation}}</h4>
 
-<p>User agents must create a {{DOMImplementation}} object whenever a <a for=/>document</a> is
-created and associate it with that <a for=/>document</a>.
+User agents must create a {{DOMImplementation}} object whenever
+a <a>document</a> is created and associate it
+with that <a>document</a>.
 
 <pre class=idl>
 [Exposed=Window]
@@ -5864,7 +5833,7 @@ interface DOMImplementation {
  <dt><code><var>doc</var> = <var>document</var> . {{Document/implementation}} . <a method for=DOMImplementation lt=createHTMLDocument()>createHTMLDocument([<var>title</var>])</a></code>
 
  <dd>
-  Returns a <a for=/>document</a>, with a basic
+  Returns a <a>document</a>, with a basic
   <a>tree</a> already constructed including a
   <{title}> element, unless the <var>title</var>
   argument is omitted.
@@ -5882,7 +5851,7 @@ method steps are:
  <li><p>Return a new <a>doctype</a>, with <var>qualifiedName</var> as its
  <a for=DocumentType>name</a>, <var>publicId</var> as its <a>public ID</a>, and <var>systemId</var>
  as its <a>system ID</a>, and with its <a for=Node>node document</a> set to the associated
- <a for=/>document</a> of <a>this</a>.
+ <a>document</a> of <a>this</a>.
 </ol>
 
 <p class=note>No check is performed that <var>publicId</var> code points match the
@@ -5907,7 +5876,7 @@ method steps are:
  <li><p>If <var>element</var> is non-null, <a>append</a> <var>element</var> to <var>document</var>.
 
  <li><p><var>document</var>'s <a for=Document>origin</a> is <a>this</a>'s associated
- <a for=/>document</a>'s <a for=Document>origin</a>.
+ <a>document</a>'s <a for=Document>origin</a>.
 
  <li>
   <p><var>document</var>'s <a for=Document>content type</a> is determined by <var>namespace</var>:
@@ -5931,7 +5900,7 @@ method steps are:
 method steps are:
 
 <ol>
- <li><p>Let <var>doc</var> be a new <a for=/>document</a> that is an <a>HTML document</a>.
+ <li><p>Let <var>doc</var> be a new <a>document</a> that is an <a>HTML document</a>.
 
  <li><p>Set <var>doc</var>'s <a for=Document>content type</a> to "<code>text/html</code>".
 
@@ -5960,8 +5929,8 @@ method steps are:
  <li><p><a>Append</a> the result of <a>creating an element</a> given <var>doc</var>,
  "<code>body</code>", and the <a>HTML namespace</a>, to the <{html}> element created earlier.</li>
 
- <li><p><var>doc</var>'s <a for=Document>origin</a> is <a>this</a>'s associated
- <a for=/>document</a>'s <a for=Document>origin</a>.
+ <li><p><var>doc</var>'s <a for=Document>origin</a> is <a>this</a>'s associated <a>document</a>'s
+ <a for=Document>origin</a>.
 
  <li><p>Return <var>doc</var>.
 </ol>
@@ -7376,7 +7345,7 @@ steps:
  <li>
   <p>If this {{NamedNodeMap}} object's <a for=NamedNodeMap>element</a> is in the
   <a>HTML namespace</a> and its <a for=Node>node document</a> is an <a>HTML document</a>, then
-  <a for=list>for each</a> <var>name</var> of <var>names</var>:
+  <a for=list>for each</a> <var>name</var> in <var>names</var>:
 
   <ol>
    <li><p>Let <var>lowercaseName</var> be <var>name</var>, in <a>ASCII lowercase</a>.
@@ -8227,7 +8196,7 @@ to set <a>this</a>'s <a for=range>start</a> and <a for=range>end</a> to
 
 <dl class=domintro>
  <dt><var>container</var> = <var>range</var> . {{Range/commonAncestorContainer}}
- <dd>Returns the <a for=/>node</a>, furthest away from the <a for=/>document</a>, that is an
+ <dd>Returns the <a for=/>node</a>, furthest away from the <a>document</a>, that is an
  <a for=tree>ancestor</a> of both <var>range</var>'s <a for=range>start node</a> and
  <a for=range>end node</a>.
 </dl>
@@ -10056,7 +10025,7 @@ method steps are:
 
 <ol>
  <li>
-  <p><a for=list>For each</a> <var>token</var> of <var>tokens</var>:
+  <p><a for=list>For each</a> <var>token</var> in <var>tokens</var>:
 
   <ol>
    <li><p>If <var>token</var> is the empty string, then <a>throw</a> a "{{SyntaxError!!exception}}"
@@ -10066,7 +10035,7 @@ method steps are:
    "{{InvalidCharacterError!!exception}}" {{DOMException}}.
   </ol>
 
- <li><p><a for=list>For each</a> <var>token</var> of <var>tokens</var>, <a for=set>append</a>
+ <li><p><a for=list>For each</a> <var>token</var> in <var>tokens</var>, <a for=set>append</a>
  <var>token</var> to <a>this</a>'s <a>token set</a>.
 
  <li><p>Run the <a>update steps</a>.
@@ -10078,7 +10047,7 @@ method steps are:
 
 <ol>
  <li>
-  <p><a for=list>For each</a> <var>token</var> of <var>tokens</var>:
+  <p><a for=list>For each</a> <var>token</var> in <var>tokens</var>:
 
   <ol>
    <li><p>If <var>token</var> is the empty string, then <a>throw</a> a "{{SyntaxError!!exception}}"
@@ -10434,7 +10403,6 @@ Daniel Clark,
 Daniel Glazman,
 Darien Maillet Valentine<!-- bhathos; GitHub -->,
 Darin Fisher,
-David Baron,
 David Bruant,
 David Flanagan,
 David Håsäther,
@@ -10555,7 +10523,6 @@ Sergey G. Grekhov,
 Shiki Okasaka,
 Shinya Kawanaka,
 Simon Pieters,
-Simon Wülker,
 Stef Busking,
 Steve Byrne,
 Stig Halvorsen,
